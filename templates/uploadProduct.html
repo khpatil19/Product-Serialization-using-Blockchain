@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Product Serialization using Blockchain</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700|Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="../static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="../static/css/responsive.css" rel="stylesheet" />
+  <!--===============================================================================================-->
+  <script src="{{url_for('static',filename='new/js/jquery-3.3.1.js')}}"></script>
+  <script src="{{url_for('static',filename='new/blockchain.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <!--===============================================================================================-->
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              Product Serialization using Blockchain
+            </span>
+          </a>
+
+
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="d-flex  flex-column flex-lg-row align-items-center w-100 justify-content-between">
+              <ul class="navbar-nav  ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/main">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/uploadProduct"> Upload product </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout"> logout </a>
+                </li>
+
+              </ul>
+
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+
+
+  <!-- contact section -->
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="custom_heading-container ">
+          <h2>
+            Upload product details
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="container layout_padding2">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form_contaier">
+            <form action="" method="post" id="fileUploadForm" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="exampleInputName1">Choose product</label>
+                <input type="file" name="filename" id="filename" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputNumber1">Product id</label>
+                <input type="text" name="pid" id="pid" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Product name </label>
+                <input type="email" name="pname" id="pname" class="form-control">
+              </div>
+              <div class="form-group ">
+                <label for="inputState">Select medicine</label>
+                <select id="sel1" name="category" class="form-control">
+                  <option>Select Product category</option>
+                  <option value="Repetitive manufacturing">Repetitive manufacturing</option>
+                  <option value="Discrete manufacturing">Discrete manufacturing</option>
+                  <option value="Job shop manufacturing.">Job shop manufacturing.</option>
+                  <option value="Process manufacturing (continuous)">Process manufacturing (continuous)</option>
+                  <option value="Process manufacturing (batch)">Process manufacturing (batch)</option>
+                </select>
+              </div>
+
+
+              <div class="form-group ">
+                <label for="inputState">Select medicine</label>
+                <select id="sel2" name="quantity" class="form-control">
+                  <option>Select Quantity</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Product price </label>
+                <input type="text" name="pprice" id="pprice" class="form-control">
+              </div>
+
+              <button type="submit" id="btnSubmit" class="">Send</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="detail-box">
+            <h3 style="color: black;">
+              eCommerce Product Upload Services
+            </h3>
+            <p style="color: black;">
+              Go to the page where you want to add the product e.g. your Home page. In the Product Block choose a
+              product from the drop-down list of products already in your store and click Add Product. The product will
+              be added to your page displaying the product name, an image, a short description and the price.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end contact section -->
+  <script>
+    $(document).ready(function () {
+
+      $("#btnSubmit").click(function (event) {
+        event.preventDefault();
+        var form = $('#fileUploadForm')[0];
+        var data = new FormData(form);
+        $("#btnSubmit").prop("disabled", true);
+        $.ajax({
+          type: "POST",
+          enctype: 'multipart/form-data',
+          url: "uploadProduct",
+          data: data,
+          processData: false,
+          contentType: false,
+          cache: false,
+          timeout: 600000,
+          success: function (data) {
+            console.log(data);
+            var filename = data['a'];
+            var idof = data['b'];
+            var nameofp = data['c'];
+            var category = data['d'];
+            var price = data['e'];
+            var username = data['f'];
+            var password = data['g'];
+            var quantity = data['h'];
+
+            web3 = new Web3(web3.currentProvider);
+            var accountisobtained = "";//accountis;
+            web3.eth.getAccounts((err, res) => {
+              accountisobtained = res[0];
+              $('#acd').html(accountisobtained);
+              var web3dictdata = {
+                gasPrice: web3.utils.stringToHex(gasPriceval),
+                gas: web3.utils.stringToHex(gasval),
+                to: address,
+                from: accountisobtained,
+              }
+              $("#btnSubmit").prop("disabled", false);
+
+              // intquantity = parseInt(quantity);
+              // for (let i = 0; i < intquantity; i++) {
+
+              // 	var val=contract.methods.addFiledetails(accountisobtained,filename, idof, nameofp, category, price, username, password).send(web3dictdata);
+
+              // }
+
+              // return val;
+
+              return contract.methods.addFiledetails(accountisobtained, filename, idof, nameofp, category, price, username, password).send(web3dictdata);
+
+            });
+            return false;
+
+            $("#btnSubmit").prop("disabled", false);
+          },
+          error: function (e) {
+            console.log("ERROR : ", e);
+            $("#btnSubmit").prop("disabled", false);
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- info section -->
+  <section class="info_section layout_padding2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="info_contact">
+            <h4>
+              Contact
+            </h4>
+            <div class="box">
+              <div class="img-box">
+                <img src="../static/images/telephone-symbol-button.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h6>
+                  +01 123567894
+                </h6>
+              </div>
+            </div>
+            <div class="box">
+              <div class="img-box">
+                <img src="../static/images/email.png" alt="">
+              </div>
+              <div class="detail-box">
+                <h6>
+                  demo@gmail
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info_menu">
+            <h4>
+              Menu
+            </h4>
+            <ul class="navbar-nav  ">
+              <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html"> About </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="medicine.html"> Medicine </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="buy.html"> Online Buy </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info_news">
+            <h4>
+              newsletter
+            </h4>
+            <form action="">
+              <input type="text" placeholder="Enter Your email">
+              <div class="d-flex justify-content-center justify-content-md-end mt-3">
+                <button>
+                  Subscribe
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+
+  </section>
+  <!-- footer section -->
+
+
+  <script type="text/javascript" src="../static/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="../static/js/bootstrap.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js">
+  </script>
+  <script type="text/javascript">
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: [],
+      autoplay: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(".owl-2").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: [],
+      autoplay: true,
+
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

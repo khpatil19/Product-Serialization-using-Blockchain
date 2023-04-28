@@ -1,0 +1,174 @@
+pragma experimental ABIEncoderV2;
+
+contract Fakeproduct {
+    
+    struct filedetails { 
+        address key;
+        string filename;
+        string pid;
+        string pname;
+        string pcategory;
+        string pprice;
+        string username;
+        string passw;
+    }
+    
+    struct userinfo {
+        address key;
+        string name;
+        string dob;
+        string mobile;
+        string email;
+        string password;
+        string typeofuser;
+    }
+
+    struct qrinformation {
+        address key;
+        string pid;
+        string pname;        
+        string pcat;
+        string pprice;
+        string qrname;
+    }
+
+    mapping (string => address) userAddresses;
+    mapping (address => filedetails) filedetailss;
+    mapping (address => userinfo) userinfos;
+    mapping (address => qrinformation) qrinformations;
+    
+    filedetails[] public allfiledetailss;
+    userinfo[] public allusers;
+    qrinformation[] public allQrInformation;
+    
+    event getRecord(string data);
+    
+    function userRegister(string memory user,  string memory name, string memory dob, string memory mobile, 
+    string memory email, string memory password, string memory typeofuser) public {
+       
+            address pAddr = userAddresses[user];
+            userinfo memory userinfo1 = userinfo(msg.sender,name, dob, mobile, email, password, typeofuser);  
+            
+            //caseinfos[pAddr].case_id=case_id;//.push(name);
+           
+            userinfos[pAddr].name=name;
+            userinfos[pAddr].dob=dob;
+            userinfos[pAddr].mobile=mobile;
+            userinfos[pAddr].email=email;
+            userinfos[pAddr].password=password;
+            userinfos[pAddr].typeofuser=typeofuser;
+            
+            allusers.push(userinfo1);
+       
+    }
+    
+    
+    function Login(string memory user,string memory name,string memory password,string memory typeofuser) public returns(userinfo[] memory) 
+    {
+        address pAddr = userAddresses[user];
+        userinfo[] memory result = new userinfo[](allusers.length);  // step 2 - create the fixed-length array
+        uint256 j;       
+        
+            for (uint i = 0; i < allusers.length; i++)
+            {
+                if(keccak256(abi.encodePacked(string(allusers[i].name)))==keccak256(abi.encodePacked(name)) && keccak256(abi.encodePacked(string(allusers[i].password)))==keccak256(abi.encodePacked(password)) && keccak256(abi.encodePacked(string(allusers[i].typeofuser)))==keccak256(abi.encodePacked(typeofuser)))
+                {
+                    emit getRecord(allusers[i].name);
+                    result[j]=allusers[i];
+                    j++;
+                }
+            }
+            return result;  
+    }
+
+    function addFiledetails(string memory user,  string memory filename, string memory pid, string memory pname, string memory pcategory, string memory pprice ,string memory username, string memory passw) public {
+       
+            address pAddr = userAddresses[user];
+            filedetails memory filedetails1 = filedetails(msg.sender,filename, pid,pname,pcategory,pprice,username,passw);
+            
+            
+            filedetailss[pAddr].filename=filename;
+            filedetailss[pAddr].pid=pid;
+            filedetailss[pAddr].pname=pname;
+            filedetailss[pAddr].pcategory=pcategory;
+            filedetailss[pAddr].pprice=pprice;
+            filedetailss[pAddr].username=username;
+            filedetailss[pAddr].passw=passw;
+            
+            allfiledetailss.push(filedetails1);
+    }    
+    
+    function viewUploadedproducts(string memory user) public returns(filedetails[] memory) 
+    {
+        address pAddr = userAddresses[user];
+        filedetails[] memory result = new filedetails[](allfiledetailss.length);  // step 2 - create the fixed-length array
+        uint256 j;       
+        for (uint i = 0; i < allfiledetailss.length; i++)
+        {
+            emit getRecord(allfiledetailss[i].filename);
+            result[j]=allfiledetailss[i];
+            j++;
+
+        }
+        return result;  
+    }
+
+    function validateProduct(string memory user,string memory name,string memory password,string memory typeofuser) public returns(userinfo[] memory) 
+    {
+        address pAddr = userAddresses[user];
+        userinfo[] memory result = new userinfo[](allusers.length);  // step 2 - create the fixed-length array
+        uint256 j;       
+        
+            for (uint i = 0; i < allusers.length; i++)
+            {
+                if(keccak256(abi.encodePacked(string(allusers[i].name)))==keccak256(abi.encodePacked(name)) && keccak256(abi.encodePacked(string(allusers[i].password)))==keccak256(abi.encodePacked(password)) && keccak256(abi.encodePacked(string(allusers[i].typeofuser)))==keccak256(abi.encodePacked(typeofuser)))
+                {
+                    emit getRecord(allusers[i].name);
+                    result[j]=allusers[i];
+                    j++;
+                }
+                else{
+                    emit getRecord(allusers[i].typeofuser);
+                    result[j]=allusers[i];
+                    j++;
+                }
+            }
+            return result;  
+    }
+
+    function addQrCode(string memory user,  string memory pid, string memory pname,string memory pcat,  string memory pprice, string memory qrname) public {
+       
+            address pAddr = userAddresses[user];
+            qrinformation memory qrinformation1 = qrinformation(msg.sender,pid, pname, pcat, pprice, qrname);  
+            
+            //caseinfos[pAddr].case_id=case_id;//.push(name);
+           
+            qrinformations[pAddr].pid=pid;
+            qrinformations[pAddr].pname=pname;
+            qrinformations[pAddr].pcat=pcat;
+            qrinformations[pAddr].pprice=pprice;
+            qrinformations[pAddr].qrname=qrname;           
+            
+            allQrInformation.push(qrinformation1);
+       
+    }
+
+    function viewQrcode(string memory user,string memory pid,string memory pname,string memory pcat,string memory pprice) public returns(qrinformation[] memory) 
+    {
+        address pAddr = userAddresses[user];
+        qrinformation[] memory result = new qrinformation[](allQrInformation.length);  // step 2 - create the fixed-length array
+        uint256 j;       
+        for (uint i = 0; i < allQrInformation.length; i++)
+        {
+            if(keccak256(abi.encodePacked(string(allQrInformation[i].pid)))==keccak256(abi.encodePacked(pid)) && keccak256(abi.encodePacked(string(allQrInformation[i].pname)))==keccak256(abi.encodePacked(pname)) && keccak256(abi.encodePacked(string(allQrInformation[i].pcat)))==keccak256(abi.encodePacked(pcat)) && keccak256(abi.encodePacked(string(allQrInformation[i].pprice)))==keccak256(abi.encodePacked(pprice)))
+            {
+                emit getRecord(allQrInformation[i].qrname);
+                result[j]=allQrInformation[i];
+                j++;
+            }
+
+        }
+        return result;  
+    }
+
+}

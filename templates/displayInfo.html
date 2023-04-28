@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Product Serialization using Blockchain</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700|Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="../static/css/style.css" rel="stylesheet" />
+  <!--===============================================================================================-->
+	<script src="{{url_for('static',filename='new/js/jquery-3.3.1.js')}}"></script>
+	<script src="{{url_for('static',filename='new/blockchain.js')}}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+	<!--===============================================================================================-->
+  <!-- responsive style -->
+  <link href="../static/css/responsive.css" rel="stylesheet" />
+  <style>
+    .drop{
+  
+      width: 100%;
+      height: 50px;
+      color: var(--heading-color);
+      background: var(--bg-grey);
+      font-size: 15px;
+      padding: 10px;
+      border: 1px solid var(--border-color-light);
+      outline: none;
+      margin-bottom: 10px;
+      border-radius: 4px;
+  
+    }
+    
+    #ex1Slider .slider-selection {
+    background: #BABABA;
+      }
+    </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="/main1">
+            <span>
+              Product Serialization using Blockchain
+            </span>
+          </a>
+
+
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="d-flex  flex-column flex-lg-row align-items-center w-100 justify-content-between">
+              <ul class="navbar-nav  ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/main1">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/displayInfo"> Generate QR code </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout"> Logout </a>
+                </li>
+
+              </ul>
+
+
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+
+  <!-- about section -->
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="custom_heading-container ">
+        <h2>
+          View product
+        </h2>
+      </div>
+
+      <section class="w3l-subscribe-content py-5">
+        <div class="container py-md-4 py-3 text-center">
+          <div class="row my-lg-4 mt-4">
+            <div class="col-lg-9 col-md-10 mx-auto">
+              <div class="subscribe mx-auto">
+
+
+
+                <table class="table table-bordered">
+
+                  <tbody>
+                    <th>Product id</th>
+                    <th>Product name</th>
+                    <th>View product</th>
+                  </tbody>
+
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+
+
+
+  <!-- end info section -->
+  <script>
+		$(document).ready(function () {
+			web3=new Web3(web3.currentProvider);
+			var accountisobtained="";//accountis
+			web3.eth.getAccounts((err, res) => { 
+				accountisobtained=res[0];
+				$('#acd').html(accountisobtained);
+				var web3dictdata = {
+						gasPrice: web3.utils.stringToHex(gasPriceval),
+						gas: web3.utils.stringToHex(gasval),
+						  to: address,
+						//  value: web3.utils.toWei('1', "ether"),
+						  from:accountisobtained,		
+				}				
+				contract.methods.viewUploadedproducts(accountisobtained).call().then(function(recordResults)
+				{
+					console.log(recordResults)
+					for(var i=0; i<recordResults.length; i++)
+					{
+						var str2 = recordResults[i][2];
+						if(str2 == "")
+						{
+							continue;
+						}
+						else
+						{
+            				
+    						var allrec = recordResults[i][1]+"|"+recordResults[i][2]+"|"+recordResults[i][3]+"|"+recordResults[i][4]+"|"+recordResults[i][5]+"|"+recordResults[i][6]+"|"+recordResults[i][7]						
+                            markup = "<tr><td>"+recordResults[i][2]+"</td><td>"+recordResults[i][3]+"</td><td><form action=\"/displayProduct\" method=\"post\"><input type=\"hidden\" name=\"fname\" value=\""+ allrec +"\"><input type=\"submit\" id=\""+ recordResults[i][6] +"\" value=\"View product\" class=\"btn btn-success\" style=\"background-color: #32CD32;\"></form></td></tr>";
+						    tableBody = $("table tbody");
+						    tableBody.append(markup);						    
+						    
+            				var typeofuser = "manufacturer";            										    
+						    
+            				var username = recordResults[i][6];
+            				var password = recordResults[i][7];            				
+            								    
+						    contract.methods.validateProduct(accountisobtained,username,password,typeofuser).call().then(function(recordResults1)
+            				{
+            					console.log(recordResults1)
+            					for(var j=0; j<recordResults1.length; j++)
+            					{
+            						var str = recordResults1[j][6];
+            						console.log(str)
+            						if(str != typeofuser)
+            						{                
+            							document.getElementById(recordResults1[j][1]).style.backgroundColor = "#f44336";
+                						document.getElementById(recordResults1[j][1]).disabled = true;
+            						}
+
+            					}
+            				})  
+						    
+                        }
+						<!--}-->
+					}
+					$('table').show();
+				})
+				return false; 
+			});
+			return false;
+			
+		});
+	</script>
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+
+  </section>
+  <!-- footer section -->
+
+
+  <script type="text/javascript" src="../static/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="../static/js/bootstrap.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js">
+  </script>
+  <script type="text/javascript">
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: [],
+      autoplay: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(".owl-2").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: [],
+      autoplay: true,
+
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
