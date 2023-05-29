@@ -8,6 +8,7 @@ Through our project, we addressed the limitations of traditional product seriali
 Our completed project has successfully demonstrated the potential of blockchain in improving supply chain management in the pharmaceutical industry. The adoption of our blockchain-based solution has the potential to enhance trust and transparency among stakeholders, ultimately contributing to a safer and more reliable pharmaceutical supply chain ecosystem.
 
 # Setting up the project
+Download the project files and keep them stored in a folder on your device. You’ll also need the project files for the android application, which you can download from [this repository](https://github.com/khpatil19/Product-Serialization-App).
 
 In order to run this prototype, you’ll need the following installed on your device:
 
