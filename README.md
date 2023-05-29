@@ -37,4 +37,3 @@ In order to run this prototype, you’ll need the following installed on your de
     1. Import the mobile application (code is in this repository).
     2. Open *URLlinks.java*. Replace the IP with the one generated in the Spyder console. For instance - as per our earlier example, the line should look like `public static String *urlserverpython*="http://192.168.1.7:5000/";`
     3. Ensuring that your mobile device is plugged in via USB cable and on Developer Mode (with USB debugging enabled), run *URLlinks.java*. The app should run on your device.
-7. Follow the steps in the video tutorial to test the functioning of both the web and mobile application.
